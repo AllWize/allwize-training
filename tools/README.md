@@ -1,6 +1,6 @@
 # AllWize Training Environment
 
-This repository contains a training environment for workshops using two different approaches:
+This folder contains a training environment for workshops using two different approaches:
 
 * A vagrant definition file for a VirtualBox machine
 * A docker-compose file to run a docker stack
@@ -19,7 +19,7 @@ None of the services have any security defined.
 
 ## License
 
-Copyright (C) 2020 by AllWize ([http://allwize.io](http://allwize.io))
+Copyright (C) 2020-2021 by AllWize ([http://allwize.io](http://allwize.io))
 
 AllWize library is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
