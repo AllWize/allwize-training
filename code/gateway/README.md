@@ -1,15 +1,21 @@
 # AllWize - WIZE 2 MQTT Bridge
 
-Listens to messages on the same channel, data rate and CF and
-forwards them to an MQTT broker.
+Listens to messages on the same channel and data rate,
+decodes them using LPP or MBUS and forwards them to an MQTT broker.
 This example is meant to run on a Wemos D1 board (ESP8266).
 
 Configuration: copy the `configuration.sample.h` file to `configuration.h` and
 edit it to configure your WiFi network credentials and the MQTT broker data.
 
-The payload format is very simple at the moment being just a comma separated list of values.
-The topic is configured to be a placeholder with the node identification
-(now using the message CI file) and an index for each value in the payload.
+Required libraries:
+
+* AllWize @ 1.1.6
+* CayenneLPP @ 1.1.0
+* ArduinoJson @ 6.17.3
+* MBUSPayload @ 1.0.0
+* AsyncMqttClient @ 0.8.2 (ZIP in `libraries` folder)
+* ESPAsyncTCP @ 1.2.0 (ZIP in `libraries` folder)
+* AsyncTCP @ 1.1.1 (ZIP in `libraries` folder)
 
 Always remember to connect the antenna before powering the board!
 
