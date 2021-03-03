@@ -1,3 +1,4 @@
 .vagrant
 *.box
 docker/data
+*.ova
