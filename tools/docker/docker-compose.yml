@@ -4,13 +4,15 @@ services:
 
   mosquitto:
     container_name: mosquitto
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:1.6.13
     networks:
       - iot
     ports:
       - "1883:1883"
     volumes:
-      - mosquitto:/mosquitto
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./data/mosquitto/data:/mosquitto/data 
+      - ./data/mosquitto/log:/mosquitto/log
       - /etc/localtime:/etc/localtime:ro
     env_file: .env
     restart: unless-stopped
@@ -23,21 +25,21 @@ services:
     ports:
       - "1880:1880"
     volumes:
-      - nodered:/data 
+      - ./data/nodered:/data 
       - /etc/localtime:/etc/localtime:ro
     env_file: .env
     restart: unless-stopped
   
   influxdb:
     container_name: influxdb
-    image: "influxdb"
+    image: influxdb:1.8.4-alpine
     networks:
       - iot
     ports:
       - "8086:8086"
     volumes:
-      - influxdb-var:/var/lib/influxdb 
-      - influxdb-etc:/etc/influxdb 
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf
+      - ./data/influxdb:/var/lib/influxdb 
       - /etc/localtime:/etc/localtime:ro
     env_file: .env
     restart: unless-stopped
@@ -50,8 +52,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - grafana-etc:/etc/grafana
-      - grafana-lib:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
+      - ./data/grafana:/var/lib/grafana
       - /etc/localtime:/etc/localtime:ro
     environment:
       GF_INSTALL_PLUGINS: grafana-clock-panel,natel-discrete-panel,briangann-gauge-panel,vonage-status-panel,neocat-cal-heatmap-panel,ryantxu-ajax-panel,petrslavotinek-carpetplot-panel,grafana-piechart-panel
@@ -61,11 +63,3 @@ services:
 networks:
   iot:
     name: allwize-iot
-
-volumes:
-  mosquitto:
-  nodered:
-  influxdb-var:
-  influxdb-etc:
-  grafana-etc:
-  grafana-lib:
