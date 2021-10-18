@@ -52,6 +52,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define WIZE_APP_ID		        0xFE
 #define WIZE_NETWORK_ID		    0x01
 
+#define BATTERY_MONITOR_PIN     A3
+#define BATTERY_MONITOR_ENABLE  4
+#define BATTERY_RATIO           (3300.0 * 2.0 / 1024.0)
+
 // -----------------------------------------------------------------------------
 // Globals
 // -----------------------------------------------------------------------------
@@ -113,6 +117,10 @@ void sensorSetup() {
         DEBUG_SERIAL.println("[SENSOR] Could not find a valid BME280 sensor, check wiring!");
         while (1);
     }
+    pinMode(BATTERY_MONITOR_ENABLE, OUTPUT);
+    pinMode(BATTERY_MONITOR_PIN, INPUT);
+    digitalWrite(BATTERY_MONITOR_ENABLE, HIGH);
+    analogReadResolution(10);
     DEBUG_SERIAL.println("[SENSOR] Sensor ready!");
 }
 
@@ -140,6 +148,19 @@ float getPressure() {
     return p;
 }
 
+// Returns battery level in mV
+float getBattery() {
+    digitalWrite(BATTERY_MONITOR_ENABLE, LOW);
+    delay(40);
+    float battery = BATTERY_RATIO * analogRead(BATTERY_MONITOR_PIN);
+    DEBUG_SERIAL.println(analogRead(BATTERY_MONITOR_PIN));
+    digitalWrite(BATTERY_MONITOR_ENABLE, HIGH);
+    DEBUG_SERIAL.print("[SENSOR] Battery (mV): ");
+    DEBUG_SERIAL.println(battery);
+    return battery;
+}
+
+
 // -----------------------------------------------------------------------------
 // Main
 // -----------------------------------------------------------------------------
@@ -164,6 +185,7 @@ void loop() {
 
     // Build payload
     payload.reset();
+    payload.addAnalogInput(1, getBattery());
     payload.addTemperature(2, getTemperature());
     payload.addRelativeHumidity(3, getHumidity());
     payload.addBarometricPressure(4, getPressure());
