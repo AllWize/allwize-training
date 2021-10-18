@@ -138,11 +138,17 @@ void wizeSetup() {
     allwize.setChannel(WIZE_CHANNEL, true);
     allwize.setPower(WIZE_POWER);
     allwize.setDataRate(WIZE_DATARATE);
+    allwize.setMID(WIZE_MID);
+
+    unsigned long chipId = ESP.getChipId();
+    chipId |= (0x20 << 24);
+    allwize.setUID(chipId);
 
     DEBUG_SERIAL.printf("[WIZE] Module type: %s\n", allwize.getModuleTypeName().c_str());
     DEBUG_SERIAL.printf("[WIZE] MBUS mode: 0x%2X\n", allwize.getMode());
     DEBUG_SERIAL.printf("[WIZE] Channel: %d\n", allwize.getChannel());
     DEBUG_SERIAL.printf("[WIZE] Datarate: %d (%d bps)\n", allwize.getDataRate(), allwize.getDataRateSpeed(allwize.getDataRate()));
+    DEBUG_SERIAL.printf("[WIZE] GW EUI: %04X%08X\n", (unsigned int) WIZE_MID, chipId);
     DEBUG_SERIAL.printf("[WIZE] Listening...\n");
 
 }
@@ -154,7 +160,7 @@ void wizeDebugMessage(allwize_message_t message) {
         "[WIZE] ADDR: 0x%s, RSSI: %d, DATA: 0x%s\n",
         bin2hex(message.address, 4).c_str(),
         (int16_t) message.rssi / -2,
-        bin2hex(message.data, message.len).c_str()
+        bin2hex(message.data, message.len - 2).c_str()
     );
 
 }
@@ -197,7 +203,7 @@ void wizeMQTTParse(allwize_message_t message) {
     //gateway["sn"] = allwize.getSerialNumber();
     gateway["rssi"] = message.rssi / -2;
 
-    root["payload"] = bin2hex(message.data, message.len);
+    root["payload"] = bin2hex(message.data, message.len - 2);
 
     char topic[32];
 
