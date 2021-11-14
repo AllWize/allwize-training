@@ -46,6 +46,7 @@ Configuration file
 #define WIZE_CHANNEL            CHANNEL_04
 #define WIZE_POWER              POWER_20dBm
 #define WIZE_DATARATE           DATARATE_2400bps
+#define WIZE_MID                0x06FA
 
 //------------------------------------------------------------------------------
 // MQTT configuration
