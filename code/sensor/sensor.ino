@@ -1,8 +1,8 @@
 /*
 
-AllWize - Simple BME280 Example
+AllWize - Simple Example
 
-Simple slave that sends BME280 data using CayenneLPP frame format.
+Simple slave that sends faked data using CayenneLPP frame format.
 
 Copyright (C) 2018-2021 by AllWize <github@allwize.io>
 
@@ -23,8 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AllWize.h"
 #include "CayenneLPP.h"
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h>
 
 // -----------------------------------------------------------------------------
 // Board configuration
@@ -45,12 +43,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------------
 
 #define WIZE_CHANNEL            CHANNEL_04
-#define WIZE_POWER              POWER_20dBm
+#define WIZE_POWER              POWER_14dBm
 #define WIZE_DATARATE           DATARATE_2400bps
 #define WIZE_MID                0x06FA
 #define WIZE_UID                0x20212223
-#define WIZE_APP_ID		        0xFE
-#define WIZE_NETWORK_ID		    0x01
+#define WIZE_APP_ID		          0xFE
+#define WIZE_NETWORK_ID		      0x01
 
 #define BATTERY_MONITOR_PIN     A3
 #define BATTERY_MONITOR_ENABLE  4
@@ -62,7 +60,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AllWize allwize(&MODULE_SERIAL, RESET_PIN);
 CayenneLPP payload(32);
-Adafruit_BME280 sensor;
 
 // -----------------------------------------------------------------------------
 // AllWize
@@ -109,24 +106,19 @@ void wizeSend(uint8_t * payload, size_t len) {
 }
 
 // -----------------------------------------------------------------------------
-// Dummy sensors
+// Sensors
 // -----------------------------------------------------------------------------
 
 void sensorSetup() {
-    if (!sensor.begin(0x76)) {
-        DEBUG_SERIAL.println("[SENSOR] Could not find a valid BME280 sensor, check wiring!");
-        while (1);
-    }
     pinMode(BATTERY_MONITOR_ENABLE, OUTPUT);
     pinMode(BATTERY_MONITOR_PIN, INPUT);
     digitalWrite(BATTERY_MONITOR_ENABLE, HIGH);
     analogReadResolution(10);
-    DEBUG_SERIAL.println("[SENSOR] Sensor ready!");
 }
 
 // Returns the temperature in C (with 1 decimal)
 float getTemperature() {
-    float t = sensor.readTemperature();
+    float t = random(100, 300) / 10.0;
     DEBUG_SERIAL.print("[SENSOR] Temperature (C): ");
     DEBUG_SERIAL.println(t);
     return t;
@@ -134,7 +126,7 @@ float getTemperature() {
 
 // Returns humidity in %
 int getHumidity() {
-    unsigned char h = sensor.readHumidity();
+    unsigned char h = random(20, 70);
     DEBUG_SERIAL.print("[SENSOR] Humidity (%): ");
     DEBUG_SERIAL.println(h);
     return h;
@@ -142,7 +134,7 @@ int getHumidity() {
 
 // Returns pressure in hPa
 float getPressure() {
-    float p = sensor.readPressure() / 100.0;
+    float p = random(99000, 120000) / 100.0;
     DEBUG_SERIAL.print("[SENSOR] Pressure (hPa): ");
     DEBUG_SERIAL.println(p);
     return p;
@@ -153,7 +145,6 @@ float getBattery() {
     digitalWrite(BATTERY_MONITOR_ENABLE, LOW);
     delay(40);
     float battery = BATTERY_RATIO * analogRead(BATTERY_MONITOR_PIN);
-    DEBUG_SERIAL.println(analogRead(BATTERY_MONITOR_PIN));
     digitalWrite(BATTERY_MONITOR_ENABLE, HIGH);
     DEBUG_SERIAL.print("[SENSOR] Battery (mV): ");
     DEBUG_SERIAL.println(battery);
