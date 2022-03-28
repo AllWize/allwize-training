@@ -47,8 +47,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define WIZE_DATARATE           DATARATE_2400bps
 #define WIZE_MID                0x06FA
 #define WIZE_UID                0x20212223
-#define WIZE_APP_ID		          0xFE
-#define WIZE_NETWORK_ID		      0x01
+#define WIZE_APP_ID		        0xFE
+#define WIZE_NETWORK_ID		    0x01
 
 #define BATTERY_MONITOR_PIN     A3
 #define BATTERY_MONITOR_ENABLE  4

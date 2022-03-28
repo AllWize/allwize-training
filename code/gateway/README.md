@@ -7,7 +7,7 @@ This example is meant to run on a Wemos D1 board (ESP8266).
 Configuration: copy the `configuration.sample.h` file to `configuration.h` and
 edit it to configure your WiFi network credentials and the MQTT broker data.
 
-**NOTICE: Use Arduino for ESP8266 2.4.0!!**
+**NOTICE: Use Arduino for ESP8266 2.4.X!!**
 
 Required libraries:
 
