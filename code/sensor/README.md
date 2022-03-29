@@ -20,6 +20,23 @@ Remember that Grove I2C sensor use the following color convention:
 
 Always remember to connect the antenna before powering the board!
 
+
+## Trouble shooting
+
+### Trouble compiling for the AllWize K2
+
+* You need support for AllWize K2 built in the Arduino IDE or PlatformIO (check https://github.com/allwize/allwize-boards)
+* Double check on the previous step that you have installed both Arduino and AllWize SAMD support.
+
+### "Check your wiring" error
+* On an AllWize K2, chances are the radio module should be reprogrammed, contact us
+
+### Message is being sent but not received
+* Place sender and receiver close to each ther but not too close (1m)
+* Channel and datarate must be the same on sender and receiver
+* If it's a configuration issue in either of the radio modules, a factoryReset (see sketch) might help
+
+
 ## License
 
 Copyright (C) 2018-2021 by AllWize ([http://allwize.io](http://allwize.io))

@@ -21,23 +21,28 @@ Required libraries:
 
 Always remember to connect the antenna before powering the board!
 
+
 ## Trouble shooting
 
-**Trouble compiling for ESP8266**
+### Trouble compiling for ESP8266
+
 * The SoftwareSerial library used to communicate with the module fails for Arduino for ESP8266 higer than 2.4.X (that's PlatformIO 1.8.0 version)
 * The AsyncMQTTClient has to be version 0.8.1 max
 
-**"Check your wiring" error**
+### "Check your wiring" error
+
 * Check the GPIO definition in the configuration file
 * Check physically how the K1 is connected to the Wemos board
 * If everything is OK, chances are the radio module should be reprogrammed, contact us
 
-**Message is being sent but not received**
+### Message is being sent but not received
+
 * Place sender and receiver close to each ther but not too close (1m)
 * Channel and datarate must be the same on sender and receiver
 * If it's a configuration issue in either of the radio modules, a factoryReset (see sketch) might help
 
-**Trouble connecting to the WiFi**
+### Trouble connecting to the WiFi
+
 * The ESP8266 is only compatible with 2.4GHz stations
 * If the same station (same name) us multiband (2.4GHz and 5GHz) the module might misbehave
 
